@@ -285,10 +285,10 @@ awful.keyboard.append_global_keybindings({
       awful.util.spawn("playerctl previous", false) end),
 
     -- Brightness Keys
-    -- awful.key({}, "XF86MonBrightnessUp", function ()
-      -- awful.util.spawn("brightnesssctl set +5%", false) end),
-    -- awful.key({}, "XF86MonBrightnessDown", function ()
-      -- awful.util.spawn("brightnesssctl set 5%-", false) end),
+    awful.key({}, "XF86MonBrightnessUp", function ()
+      awful.util.spawn("xbacklight -inc 5", false) end),
+    awful.key({}, "XF86MonBrightnessDown", function ()
+      awful.util.spawn("xbacklight -dec 5", false) end),
 })
 
 -- Tags related keybindings
