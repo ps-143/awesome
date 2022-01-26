@@ -24,24 +24,15 @@ require("awful.hotkeys_popup.keys")
 -- Error handling
 require("main.error-handling")
 
-
--- {{{ Autostart windowless processes
-
--- This function will run once every time Awesome is started
-local function run_once(cmd_arr)
-    for _, cmd in ipairs(cmd_arr) do
-        awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
-    end
-end
-
-run_once({ "unclutter -root" }) -- entries must be separated by commas
-
--- }}}
+-- Setup
+require("main.setup")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/default2/theme.lua")
 beautiful.useless_gap = 5
+theme = beautiful.get()
+theme.font = "Ubuntu Condensed 10"
 
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
@@ -127,6 +118,19 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
 
+local lain = require("lain")
+local markup = lain.util.markup
+local bat = lain.widget.bat({
+    settings = function()
+        bat_header = " Bat "
+        bat_p      = bat_now.perc .. " "
+        if bat_now.ac_status == 1 then
+            bat_p = bat_p .. "Plugged "
+        end
+        widget:set_markup(markup.font(theme.font, bat_header .. bat_p))
+    end
+})
+
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
@@ -201,6 +205,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 wibox.widget.systray(),
                 mykeyboardlayout,
                 mytextclock,
+                bat,
                 s.mylayoutbox,
             },
         }
