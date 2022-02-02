@@ -165,6 +165,8 @@ local bat = lain.widget.bat({
     end
 })
 
+-- local APW = require("apw.widget")
+
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
@@ -279,18 +281,26 @@ awful.keyboard.append_global_keybindings({
               {description = "lua execute prompt", group = "awesome"}),
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
+    awful.key({ modkey },            "r",     function () awful.util.spawn("rofi -show run") end,
               {description = "run prompt", group = "launcher"}),
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"}),
+    awful.key({ modkey }, "p", function() awful.util.spawn("rofi -show drun") end,
+              {description = "Rofi Application Launcher", group = "launcher"}),
 
     -- Volume Keys
-    awful.key({}, "XF86AudioLowerVolume", function ()
-      awful.util.spawn("pulsemixer --change-volume -2", false) end),
-    awful.key({}, "XF86AudioRaiseVolume", function ()
-      awful.util.spawn("pulsemixer --change-volume +2", false) end),
-    awful.key({}, "XF86AudioMute", function ()
-      awful.util.spawn("pulsemixer --toggle-mute", false) end),
+    -- awful.key({}, "XF86AudioLowerVolume", function ()
+    --   -- awful.util.spawn("pulsemixer --change-volume -2", false)
+    --   APW.Down()
+    --   -- APW.Update()
+    -- end),
+    -- awful.key({}, "XF86AudioRaiseVolume", function ()
+    --   -- awful.util.spawn("pulsemixer --change-volume +2", false)
+    --   APW.Up()
+    --   -- APW.Update()
+    -- end),
+    -- awful.key({}, "XF86AudioMute", function ()
+    --   awful.util.spawn("pulsemixer --toggle-mute", false)
+    --   APW.Update()
+    -- end),
     -- Media Keys
     awful.key({}, "XF86AudioPlay", function()
       awful.util.spawn("playerctl play-pause", false) end),

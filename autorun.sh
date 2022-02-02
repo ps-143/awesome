@@ -6,5 +6,6 @@ function run {
   fi
 }
 
-picom --experimental-backends --vsync &
-nm-applet &
+run picom --experimental-backends --vsync
+run nm-applet 
+run volumeicon

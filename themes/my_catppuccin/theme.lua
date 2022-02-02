@@ -56,6 +56,12 @@ theme.border_color_normal = clrs.black3
 theme.border_color_active = clrs.mauve
 theme.border_color_marked = clrs.maroon
 
+theme.apw_fg_color = theme.bg_focus
+theme.apw_bg_color = theme.bg_normal
+theme.apw_mute_fg_color = clrs.red
+theme.apw_mute_bg_color = clrs.maroon
+theme.apw_show_text = true
+theme.apw_text_colot = theme.fg_normal
 -- There are other variable sets
 -- overriding the default one when
 -- defined, the sets are:
@@ -150,7 +156,7 @@ theme.awesome_icon = theme_assets.awesome_icon(
 
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
-theme.icon_theme = nil
+theme.icon_theme = "/usr/share/icons/Papirus-Dark"
 
 -- Set different colors for urgent notifications.
 rnotification.connect_signal('request::rules', function()
