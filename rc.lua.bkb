@@ -7,65 +7,31 @@ pcall(require, "luarocks.loader")
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
--- Widget and layout library
-local wibox = require("wibox")
--- Theme handling library
-local beautiful = require("beautiful")
--- Notification library
-local naughty = require("naughty")
--- Lain library
-local lain = require("lain")
--- Lain utility markup
-local markup = lain.util.markup
+local wibox = require("wibox")            -- Widget and layout library
+local beautiful = require("beautiful")    -- Theme handling library
+local naughty = require("naughty")        -- Notification library
+local lain = require("lain")              -- Lain library
+local markup = lain.util.markup           -- Lain utility markup
+
 -- Declarative object management
 local ruled = require("ruled")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
--- {{{ Error handling
--- Check if awesome encountered an error during startup and fell back to
--- another config (This code will only ever execute for the fallback config)
-naughty.connect_signal("request::display_error", function(message, startup)
-    naughty.notification {
-        urgency = "critical",
-        title   = "Oops, an error happened"..(startup and " during startup!" or "!"),
-        message = message
-    }
-end)
+-- Error handling
+require("main.error-handling")
 
--- Handle runtime errors after startup
-do
-    local in_error = false
-    awesome.connect_signal("debug::error", function (err)
-        if in_error then return end
-        in_error = true
-
-        naughty.notify({ preset = naughty.config.presets.critical,
-                         title = "Oops, an error happened!",
-                         text = tostring(err) })
-        in_error = false
-    end)
-end
--- }}}
-
--- {{{ Autostart windowless processes
--- This function will run once every time Awesome is started
-local function run_once(cmd_arr)
-    for _, cmd in ipairs(cmd_arr) do
-        awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
-    end
-end
-
-run_once({ "unclutter -root" }) -- entries must be separated by commas
--- }}}
+-- Setup
+require("main.setup")
 
 -- {{{ Variable definitions
+
 -- Themes define colours, icons, font and wallpapers.
--- beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/my_catppuccin/theme.lua")
+beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/default2/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
@@ -73,11 +39,8 @@ editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+
 -- }}}
 
 -- {{{ Menu
@@ -88,7 +51,7 @@ myawesomemenu = {
    { "edit config", editor_cmd .. " " .. awesome.conffile },
    { "restart", awesome.restart },
    { "quit", function() awesome.quit() end },
-   { "restart", function() awful.util.spawn("reboot") end },
+   { "restart", function() awful.util.spawn("reboot") end},
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
@@ -109,14 +72,14 @@ tag.connect_signal("request::default_layouts", function()
     awful.layout.append_default_layouts({
         awful.layout.suit.tile,
         awful.layout.suit.floating,
-        -- awful.layout.suit.tile.left,
+        awful.layout.suit.tile.jeft,
         awful.layout.suit.tile.bottom,
-        -- awful.layout.suit.tile.top,
+        awful.layout.suit.tile.top,
+        awful.layout.suit.max,
         awful.layout.suit.fair,
         awful.layout.suit.fair.horizontal,
-        -- awful.layout.suit.spiral,
+        awful.layout.suit.spiral,
         awful.layout.suit.spiral.dwindle,
-        awful.layout.suit.max,
         awful.layout.suit.max.fullscreen,
         awful.layout.suit.magnifier,
         awful.layout.suit.corner.nw,
@@ -152,11 +115,10 @@ local mykeyboardlayout = awful.widget.keyboardlayout()
 -- Create a textclock widget
 local mytextclock = wibox.widget.textclock()
 
--- Battery
 local bat = lain.widget.bat({
     settings = function()
       if bat_now.perc ~= "N/A" then
-        bat_p      = bat_now.perc .. "% "
+        bat_p      = bat_now.perc .. "%"
         if bat_now.ac_status == 1 then
             bat_p = bat_p .. "Plugged "
         end
@@ -238,8 +200,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 spacing = 5,
                 wibox.widget.systray(),
                 mykeyboardlayout,
-                bat.widget,
                 mytextclock,
+                bat,
                 s.mylayoutbox,
             },
         }
@@ -261,8 +223,8 @@ awful.mouse.append_global_mousebindings({
 awful.keyboard.append_global_keybindings({
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
+    -- awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+    --           {description = "show main menu", group = "awesome"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
@@ -554,7 +516,7 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id         = "titlebars",
         rule_any   = { type = { "normal", "dialog" } },
-        properties = { titlebars_enabled = false      }
+        properties = { titlebars_enabled = true      }
     }
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
@@ -604,8 +566,6 @@ client.connect_signal("request::titlebars", function(c)
         layout = wibox.layout.align.horizontal
     }
 end)
-
--- }}}
 
 -- {{{ Notifications
 

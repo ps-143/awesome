@@ -12,24 +12,49 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font          = "sans 8"
+local clrs = {
+	rosewater = "#F5E0DC", -- Rosewater
+	flamingo = "#F2CDCD", -- Flamingo
+	mauve = "#DDB6F2", -- Mauve
+	pink = "#F5C2E7", -- Pink
+	red = "#F28FAD", -- Red
+	maroon = "#E8A2AF", -- Maroon
+	peach = "#F8BD96", -- Peach
+	yellow = "#FAE3B0", -- Yellow
+	green = "#ABE9B3", -- Green
+	blue = "#96CDFB", -- Blue
+	sky = "#89DCEB", -- Sky
+	teal = "#B5E8E0", -- Teal
+	lavender = "#C9CBFF", -- Lavender
+	white = "#D9E0EE", -- White
+	gray2 = "#C3BAC6", -- Gray2
+	gray1 = "#988BA2", -- Gray1
+	gray0 = "#6E6C7E", -- Gray0
+	black4 = "#575268", -- Black4
+	black3 = "#302D41", -- Black3
+	black2 = "#1E1E2E", -- Black2
+	black1 = "#1A1826", -- Black1
+	black0 = "#161320", -- Black0
+}
 
-theme.bg_normal     = "#222222"
-theme.bg_focus      = "#535d6c"
-theme.bg_urgent     = "#ff0000"
-theme.bg_minimize   = "#444444"
+theme.font          = "Ubuntu Condensed 10"
+
+theme.bg_normal     = clrs.black0
+theme.bg_focus      = clrs.black3
+theme.bg_urgent     = clrs.red
+theme.bg_minimize   = clrs.gray0
 theme.bg_systray    = theme.bg_normal
+theme.systray_icon_spacing = dpi(3)
+theme.fg_normal     = clrs.gray0
+theme.fg_focus      = clrs.white
+theme.fg_urgent     = clrs.white
+theme.fg_minimize   = clrs.white
 
-theme.fg_normal     = "#aaaaaa"
-theme.fg_focus      = "#ffffff"
-theme.fg_urgent     = "#ffffff"
-theme.fg_minimize   = "#ffffff"
-
-theme.useless_gap         = dpi(0)
-theme.border_width        = dpi(1)
-theme.border_color_normal = "#000000"
-theme.border_color_active = "#535d6c"
-theme.border_color_marked = "#91231c"
+theme.useless_gap         = dpi(5)
+theme.border_width        = dpi(3)
+theme.border_color_normal = clrs.black3
+theme.border_color_active = clrs.mauve
+theme.border_color_marked = clrs.maroon
 
 -- There are other variable sets
 -- overriding the default one when
@@ -98,7 +123,7 @@ theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = "~/Pictures/Wallpapers/stardust-by-alena-aenami-1920×1080.jpg"
+theme.wallpaper = "~/Pictures/Wallpapers/clouds.png"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
@@ -131,7 +156,7 @@ theme.icon_theme = nil
 rnotification.connect_signal('request::rules', function()
     rnotification.append_rule {
         rule       = { urgency = 'critical' },
-        properties = { bg = '#ff0000', fg = '#ffffff' }
+        properties = { bg = clrs.red, fg = clrs.white }
     }
 end)
 
