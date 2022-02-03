@@ -311,9 +311,9 @@ awful.keyboard.append_global_keybindings({
 
     -- Brightness Keys
     awful.key({}, "XF86MonBrightnessUp", function ()
-      awful.util.spawn("xbacklight -inc 5", false) end),
+      awful.util.spawn("brightnessctl set +2%") end),
     awful.key({}, "XF86MonBrightnessDown", function ()
-      awful.util.spawn("xbacklight -dec 5", false) end),
+      awful.util.spawn("brightnessctl set 2%-") end),
 })
 
 -- Tags related keybindings
