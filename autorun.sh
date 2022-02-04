@@ -8,5 +8,6 @@ function run {
 
 run picom --experimental-backends --vsync
 run nm-applet 
-run volumeicon
 run blueman-applet
+sleep 5
+run volumeicon
