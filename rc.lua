@@ -150,7 +150,7 @@ end)
 local mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- Create a textclock widget
-local mytextclock = wibox.widget.textclock()
+local mytextclock = wibox.widget.textclock('%a %b %d, %I:%M')
 
 -- Battery
 local bat = lain.widget.bat({
