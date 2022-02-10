@@ -169,7 +169,12 @@ local bat = lain.widget.bat({
 
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    -- Each screen has its own tag table.
+    local names = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
+    local l = awful.layout.suit  -- Just to save some typing: use an alias.
+    local layouts = { l.max, l.tile, l.tile, l.tile, l.tile, l.tile, l.tile, l.tile, l.tile }
+    awful.tag(names, s, layouts)
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
