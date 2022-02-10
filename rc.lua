@@ -269,6 +269,8 @@ awful.keyboard.append_global_keybindings({
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
+    awful.key({modkey, "Mod1"      }, "e", function () awful.spawn(terminal .. " -e ranger") end,
+              {description = "Open ranger", group = "applications"}),
     awful.key({ modkey }, "x",
               function ()
                   awful.prompt.run {
