@@ -293,6 +293,8 @@ awful.keyboard.append_global_keybindings({
     awful.key({ modkey }, "p", function() awful.util.spawn("rofi -show drun") end,
               {description = "Rofi Application Launcher", group = "launcher"}),
 
+    awful.key({}, "Print", function() awful.util.spawn("flameshot gui") end,
+              {description = "Flameshot screenshot", group = "screen capture"}),
     -- Volume Keys
     -- awful.key({}, "XF86AudioLowerVolume", function ()
     --   -- awful.util.spawn("pulsemixer --change-volume -2", false)
